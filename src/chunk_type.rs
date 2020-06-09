@@ -17,13 +17,7 @@ impl ChunkType {
     /// (A-Z and a-z).
     fn is_valid(&self) -> bool {
         for byte in self.bytes.iter() {
-            // Before A or after z
-            if *byte < 65 || *byte > 122 {
-                return false;
-            }
-
-            // Between Z and a
-            if *byte > 90u8 && *byte < 97u8 {
+            if !byte.is_ascii_lowercase() && !byte.is_ascii_uppercase() {
                 return false;
             }
         }
