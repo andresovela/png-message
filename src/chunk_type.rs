@@ -4,8 +4,8 @@ use std::str::{self, FromStr};
 
 /// A 4-byte chunk type code.
 #[derive(Debug, PartialEq)]
-struct ChunkType {
-    bytes: [u8; 4],
+pub struct ChunkType {
+    pub bytes: [u8; 4],
 }
 
 impl ChunkType {
