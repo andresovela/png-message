@@ -4,9 +4,8 @@ use std::convert::TryFrom;
 use crc::crc32;
 use crate::chunk_type::ChunkType;
 
-use fehler::{throw, throws};
-
-struct Chunk {
+#[derive(Debug)]
+pub struct Chunk {
     length: usize,
     chunk_type: ChunkType,
     data: Vec<u8>,
@@ -14,7 +13,7 @@ struct Chunk {
 }
 
 impl Chunk {
-    fn new(chunk_type: ChunkType, data: Vec<u8>) -> Self {
+    pub fn new(chunk_type: ChunkType, data: Vec<u8>) -> Self {
         let crc_data: Vec<u8> = chunk_type.bytes.iter().chain(data.iter()).copied().collect();
 
         Chunk {
@@ -25,28 +24,28 @@ impl Chunk {
         }
     }
 
-    fn length(&self) -> u32 {
+    pub fn length(&self) -> u32 {
         self.length as u32
     }
 
-    fn chunk_type(&self) -> &ChunkType {
+    pub fn chunk_type(&self) -> &ChunkType {
         &self.chunk_type
     }
 
-    fn data(&self) -> &[u8] {
+    pub fn data(&self) -> &[u8] {
         &self.data[..]
     }
 
-    fn crc(&self) -> u32 {
+    pub fn crc(&self) -> u32 {
         self.crc
     }
 
-    fn data_as_string(&self) -> Result<String, FromUtf8Error> {
+    pub fn data_as_string(&self) -> Result<String, FromUtf8Error> {
         String::from_utf8(self.data.clone())
     }
 
-    fn as_bytes(&self) -> Vec<u8> {
-        let length_bytes = self.length.to_be_bytes();
+    pub fn as_bytes(&self) -> Vec<u8> {
+        let length_bytes = (self.length as u32).to_be_bytes();
         let crc_bytes = self.crc.to_be_bytes();
 
         length_bytes.iter()

@@ -9,13 +9,13 @@ pub struct ChunkType {
 }
 
 impl ChunkType {
-    fn bytes(&self) -> &[u8; 4] {
+    pub fn bytes(&self) -> &[u8; 4] {
         &self.bytes
     }
 
     /// Returns `true` if all the bytes are ASCII letters
     /// (A-Z and a-z).
-    fn is_valid(&self) -> bool {
+    pub fn is_valid(&self) -> bool {
         for byte in self.bytes.iter() {
             if !byte.is_ascii_lowercase() && !byte.is_ascii_uppercase() {
                 return false;
@@ -28,14 +28,14 @@ impl ChunkType {
     /// Returns `true` if this a critical chunk.
     /// A chunk is considered critical if bit 5 of the first byte
     /// is zero. Otherwise, the chunk is considered ancillary.
-    fn is_critical(&self) -> bool {
+    pub fn is_critical(&self) -> bool {
         (self.bytes[0] & 0b0010_0000) == 0
     }
 
     /// Returns `true` if this is a public chunk.
     /// A chunk is considered public if bit 5 of the second byte
     /// is zero. Otherwise, the chunk is considered private.
-    fn is_public(&self) -> bool {
+    pub fn is_public(&self) -> bool {
         (self.bytes[1] & 0b0010_0000) == 0
     }
 
@@ -43,14 +43,14 @@ impl ChunkType {
     /// The reserved bit must be zero to conform to version 1.2
     /// of the PNG specification.
     /// The reserved bit is bit 5 of the third byte.
-    fn is_reserved_bit_valid(&self) -> bool {
+    pub fn is_reserved_bit_valid(&self) -> bool {
         (self.bytes[2] & 0b0010_0000) == 0
     }
 
     /// Returns `true` if it is safe to copy this chunk.
     /// A chunk is considered safe to copy if bit 5 of the fourth byte
     /// is 1. Otherwise, the chunk is unsafe to copy.
-    fn is_safe_to_copy(&self) -> bool {
+    pub fn is_safe_to_copy(&self) -> bool {
         (self.bytes[3] & 0b0010_0000) != 0
     }
 }
